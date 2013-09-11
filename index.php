@@ -1,14 +1,16 @@
 <?
 $url = get_current_url();//"about.ttl";
-if(isset($_GET['url'])){
-  $url = $_GET['url'];
-}else{
-  $indexless = str_replace("index.php", "", $url);
-  header("Location: $indexless?url=$indexless");
-  
+if(isset($_POST['rdf'])){
+  $rdf = $_POST['rdf'];
 }
+//else{
+//  $indexless = str_replace("index.php", "", $url);
+//  header("Location: $indexless?url=$indexless");
+//  
+//}
 
-
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
 function get_current_url() {
     $protocol = 'http';
@@ -35,16 +37,16 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
 <meta rel="dc:source" href="http://github.com/alangrafu/visualRDF" /> 
 <meta property="dc:modified" content="2012-05-18" /> 
 <meta charset='utf-8'> 
-<link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css' />
-<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+<link href='http://datao.zerezo.com/visualRDF/css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css' />
+<link href='http://datao.zerezo.com/visualRDF/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-modal.js"></script>
-<script type="text/javascript" src="js/d3/d3.js"></script>
-<script type="text/javascript" src="js/d3/d3.layout.js"></script>
-<script type="text/javascript" src="js/d3/d3.geom.js"></script>
+<script type="text/javascript" src="http://datao.zerezo.com/visualRDF/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://datao.zerezo.com/visualRDF/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="http://datao.zerezo.com/visualRDF/js/d3/d3.js"></script>
+<script type="text/javascript" src="http://datao.zerezo.com/visualRDF/js/d3/d3.layout.js"></script>
+<script type="text/javascript" src="http://datao.zerezo.com/visualRDF/js/d3/d3.geom.js"></script>
 <script type="text/javascript">
-var url = '<?=$url?>',
+var rdf = '<?=$rdf?>',
     thisUrl = document.URL;
 </script>
 <title>Visual RDF</title>
@@ -52,16 +54,16 @@ var url = '<?=$url?>',
 <body>
 <div class="container-fluid">
  <div class="row-fluid">
-  <div class="span2"><h1 style="display: inline"><a href='.'>Visual RDF</a></h1></div>
+  <div class="span2"><h1 style="display: none"><a href='.'>Visual RDF</a></h1></div>
   <div class="span2"><a href='https://github.com/alangrafu/visualRDF' target="_new"><img alt="github icon" src='img/github.ico'/></a></div>
-  <div class="span2"><span id="dialogButton" style="text-decoration:none;vertical-align:middle;font-weight:bold;font-size:200%;font-family:courier;color:black;cursor: hand; cursor: pointer;">&lt;/&gt;</span></div>
+  <div class="span2"><span id="dialogButton" style="display: none; text-decoration:none;vertical-align:middle;font-weight:bold;font-size:200%;font-family:courier;color:black;cursor: hand; cursor: pointer;">&lt;/&gt;</span></div>
   <div class="span6">
    <strong style="color: red">Usage: </strong> <strong>Scroll</strong> &#8594; Zoom. <strong>Drag node</strong> &#8594; Move node. <strong>Drag background</strong> &#8594; Move graph.
   </div>
  </div>
  <div class="row-fluid">
   <div class="span6">
-   <form method="get" action="." class="form-inline">
+   <form method="get" action="." class="form-inline" style="display: none">
     <input type='text' id='url' name='url' value='<?=$url?>' size='100'/>
     <input type="submit" class="btn" value="Redraw"/>
    </form>
@@ -79,7 +81,7 @@ var url = '<?=$url?>',
  </div>
 </div>
 <div style="float: left;border-width: 1px; border-style: solid;width:100%;min-height:500px;height:100%" id='chart'></div>
-<script type="text/javascript" src='js/main.js'>
+<script type="text/javascript" src='http://datao.zerezo.com/visualRDF/js/main.js'>
 </script>
 
 <div class="modal hide" id="embedDialog">

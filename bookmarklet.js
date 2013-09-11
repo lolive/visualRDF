@@ -1,0 +1,1 @@
+javascript: (function(){ if (typeof GreenTurtle2 == "undefined") { _my_script=document.createElement('SCRIPT'); _my_script.type='text/javascript'; _my_script.src='http://datao.zerezo.com/myrdfa.js'; document.getElementsByTagName('head')[0].appendChild(_my_script); } else {GreenTurtle2.attach(document);}})()

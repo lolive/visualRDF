@@ -116,7 +116,7 @@ function createPredicateFilters(up){
       .call(force.drag);
       
       node.filter(function(d){return d.type == "uri"}).append("svg:a") 
-      .attr("xlink:href", function(d){return "./?url="+d.uri} ).attr("target", "_new").append("svg:circle")
+      .attr("xlink:href", function(d){return d.uri} ).attr("target", "_new").append("svg:circle")
       .attr("class", "node")
       .attr("r", 10)
       .attr("x", "-8px")
@@ -199,11 +199,22 @@ function createPredicateFilters(up){
 d3.select('circle').on('mouseover', function(){
 });
 
-function restart(myUrl){
-  d3.json('rdf2json.php?url='+encodeURIComponent(myUrl), function(json){
+function restart(rdf){
+  //d3.json('rdf2json.php?rdf='+encodeURIComponent(rdf), function(json){
+  //	  d3.select("#waiting").style("display", "none");
+  //	  init(json);
+  //});  
+    var http = new XMLHttpRequest();
+    http.open('POST',"http://datao.zerezo.com/visualRDF/rdf2json.php",true);
+    http.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    http.onreadystatechange=function() {
+    if(http.readyState == 4) {
   	  d3.select("#waiting").style("display", "none");
-  	  init(json);
-  });  
+  	  init(JSON.parse(http.response));
+        }
+    }
+    http.send("rdf="+encodeURIComponent(rdf.replace(/\n/g, ' ')));
+
 }
 
 
@@ -241,4 +252,4 @@ function updateFilters(){
 }
 
 
-restart(url);
+restart(rdf);

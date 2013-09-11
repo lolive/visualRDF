@@ -12,24 +12,28 @@ function uri2curie($uri){
   return $curie;
 }
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+
 $results = array();  
-if(isset($_GET['url'])){
-  $u = $_GET['url'];
+if(isset($_POST['rdf'])){
+  $rdf = stripslashes($_POST['rdf']);
+  $content_type = 'text/turtle';
   include_once('arc2/ARC2.php');
   
   //Because ARC2 doesn't seem to identify turtle docs using chinese characters
   //this is a workaround while its being fixed in ARC2
   
   
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $u);
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-  curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/turtle,text/n3q;0.9,application/turtle;q=0.8,application/rdf+xml;q=0.6,application/json;q=0.4,*/*"));
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  $data = curl_exec($ch);
-  $content_type = array_shift(explode(";", curl_getinfo($ch, CURLINFO_CONTENT_TYPE)));  
-  curl_close($ch);
+//  $ch = curl_init();
+//  curl_setopt($ch, CURLOPT_URL, $u);
+//  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+//  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+//  curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/turtle,text/n3q;0.9,application/turtle;q=0.8,application/rdf+xml;q=0.6,application/json;q=0.4,*/*"));
+//  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//  $data = curl_exec($ch);
+//  $content_type = array_shift(explode(";", curl_getinfo($ch, CURLINFO_CONTENT_TYPE)));  
+//  curl_close($ch);
   $parser = NULL;
   
   $parsers = array();
@@ -45,11 +49,11 @@ if(isset($_GET['url'])){
     }
   }
   //If nothing fits, pray to your favorite god that this can be detected and parsed correctly by ARC2.
-  $parser = ARC2::getRDFParser();
+  $parser = ARC2::getTurtleParser();
   
   //end of workaround
   
-  $parser->parse($u, $data); //Since IDK which namespace the documents contains, lets use the uri requested
+  $parser->parse($u, $rdf); //Since IDK which namespace the documents contains, lets use the uri requested
   $triples = $parser->getTriples();
   $first=true;
   $c = 0;
